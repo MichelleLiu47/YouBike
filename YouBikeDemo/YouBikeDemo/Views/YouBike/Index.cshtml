@@ -1,0 +1,160 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@model PagedList.StaticPagedList<YouBikeDemo.Models.YouBike>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <h2>
+        Demo-新北市公共自行車租賃系統(YouBike)
+        <small>
+            資料來源：
+            <a href="http://data.ntpc.gov.tw/NTPC/" target="_blank">
+                新北市政府資料開放平台
+            </a>
+            -
+            <a href="http://data.ntpc.gov.tw/NTPC/od/query?_m=detail&oid=71CD1490-A2DF-4198-BEF1-318479775E8A" target="_blank">
+                新北市公共自行車租賃系統(YouBike)
+            </a>
+        </small>
+    </h2>
+</div>
+<hr />
+<div class="row well">
+    <form class="form" role="form">
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon">站點代號</span>
+                @Html.DropDownList("Snos", null, "全部", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon">場站區域(中文)</span>
+                @Html.DropDownList("Sareas", null, "全部", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="input-group">
+                <span class="input-group-addon">場站名稱(中文)</span>
+                @Html.DropDownList("Snas", null, "全部", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <button type="submit" id="ButtonSubmit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-search"></span> 查詢
+            </button>
+        </div>
+    </form>
+</div>
+
+@Html.PagedListPager((IPagedList)Model,
+        page => Url.Action("Index", new
+        {
+            page = page,
+            snos = ViewBag.SelectedSno,
+            sareas = ViewBag.SelectedSarea,
+            snas = ViewBag.SelectedSna
+        }),
+        PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr style="background-color: #d3efff;">
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().No)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Bikes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Area)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().ModifyTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Latitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Longitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().AreaEnglish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().NameEnglish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().AddressEnglish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().BikeEmpty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Active)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.No)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bikes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Area)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifyTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Latitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Longitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaEnglish)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameEnglish)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddressEnglish)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BikeEmpty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

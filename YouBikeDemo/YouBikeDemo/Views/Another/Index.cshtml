@@ -1,0 +1,177 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@model YouBikeDemo.ViewModels.YouBikeViewModel
+
+@{
+    ViewBag.Title = "Another-Form.Post";
+}
+
+<div class="row">
+    <h2>
+        Demo-新北市公共自行車租賃系統(YouBike)-(Form.Post)
+        <small>
+            資料來源：
+            <a href="http://data.ntpc.gov.tw/NTPC/" target="_blank">
+                新北市政府資料開放平台
+            </a>
+            -
+            <a href="http://data.ntpc.gov.tw/NTPC/od/query?_m=detail&oid=71CD1490-A2DF-4198-BEF1-318479775E8A" target="_blank">
+                新北市公共自行車租賃系統(YouBike)
+            </a>
+        </small>
+    </h2>
+</div>
+<hr />
+<div class="row well">
+    @using (Html.BeginForm("Index", "Another", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "HotSpotList" }))
+    {
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon">站點代號</span>
+                @Html.DropDownListFor(x => x.SearchParameter.No, Model.Snos, "全部", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon">場站區域(中文)</span>
+                @Html.DropDownListFor(x => x.SearchParameter.Area, Model.Sareas, "全部", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="input-group">
+                <span class="input-group-addon">場站名稱(中文)</span>
+                @Html.DropDownListFor(x => x.SearchParameter.Name, Model.Snas, "全部", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <button type="submit" id="ButtonSubmit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-search"></span> 查詢
+            </button>
+        </div>
+    }
+</div>
+
+@Html.PagedListPager(
+        Model.YouBikes,
+        page => Url.Action("Index", new { page = page }),
+        PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr style="background-color: #d3efff;">
+            <th>
+                @Html.DisplayNameFor(model => model.YouBikes.FirstOrDefault().No)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YouBikes.FirstOrDefault().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YouBikes.FirstOrDefault().Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YouBikes.FirstOrDefault().Bikes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YouBikes.FirstOrDefault().Area)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YouBikes.FirstOrDefault().ModifyTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YouBikes.FirstOrDefault().Latitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YouBikes.FirstOrDefault().Longitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YouBikes.FirstOrDefault().Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YouBikes.FirstOrDefault().AreaEnglish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YouBikes.FirstOrDefault().NameEnglish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YouBikes.FirstOrDefault().AddressEnglish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YouBikes.FirstOrDefault().BikeEmpty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YouBikes.FirstOrDefault().Active)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.YouBikes)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.No)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bikes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Area)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifyTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Latitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Longitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaEnglish)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameEnglish)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddressEnglish)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BikeEmpty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $('.pagination>li>a[href]').each(function (i, item) {
+                var page = $(item).attr('href').replace('/Another?page=', '');
+                $(item).attr('href', '#').click(function () { postPage(page); });
+            });
+        });
+        function postPage(page) {
+            var targetFormId = '#HotSpotList';
+            if ($(targetFormId).size() > 0) {
+                $('<input>')
+                    .attr({ type: 'hidden', id: 'PageIndex', name: 'PageIndex', value: page })
+                    .appendTo($(targetFormId));
+                $(targetFormId).submit();
+            }
+        };
+    </script>
+}
